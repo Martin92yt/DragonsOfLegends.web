@@ -1,0 +1,26 @@
+{
+  "name": "dragons-of-legends-demo",
+  "version": "0.1.0",
+  "description": "The official website and text-based RPG demo for DragonsOfLegends.js.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "cls && echo. && tsx src/app.ts",
+    "dev": "npx nodemon --watch src --ext ts,json --exec tsx src/app.ts"
+  },
+  "dependencies": {
+    "consola": "^3.4.2",
+    "dotenv": "^17.4.2",
+    "dragons-of-legends.js": "^0.1.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}
