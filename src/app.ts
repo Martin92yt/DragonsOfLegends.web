@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import { consola } from "consola";
-import { ItemCategory, ItemRarity, PlayerClass, World } from "dragons-of-legends.js";
+import { ItemCategory, ItemRarity, PlayerClass, World } from "../../packages/src/index.js";
 import { renderHomePage } from "./pages/home.js";
 import { renderLoginPage } from "./pages/login.js";
 import { renderInventoryPage } from "./pages/inventory.js";
@@ -15,11 +15,10 @@ declare module "express-session" {
     user?: { id: string; username: string };
   }
 }
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-const VERSION = "0.1.0-alpha.3";
-const rpg = new World({ useWorld: true });
+const VERSION = "0.1.0";
+const rpg = new World({ premadeMap: true });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,8 +34,7 @@ const resolvePlayer = (sessionUser: { id: string; username: string }) =>
   rpg.players.ensure({
     id: sessionUser.id,
     name: sessionUser.username,
-    playerClass: PlayerClass.Explorer,
-    locationId: rpg.location.getStartingCityId(),
+    playerClass: PlayerClass.Explorer
   });
 
 // --- ROUTES ---

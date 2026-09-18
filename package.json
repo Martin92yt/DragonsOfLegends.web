@@ -13,7 +13,7 @@
   "dependencies": {
     "consola": "^3.4.2",
     "dotenv": "^17.4.2",
-    "dragons-of-legends.js": "^0.1.1",
+    "dragons-of-legends.js": "^0.1.2b",
     "express": "^5.2.1",
     "express-session": "^1.19.0"
   },
@@ -22,5 +22,8 @@
     "@types/express-session": "^1.19.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "dragons-of-legends.js@0.1.2": true
   }
 }
