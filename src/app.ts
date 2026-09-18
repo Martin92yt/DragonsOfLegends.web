@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import { consola } from "consola";
-import { ItemCategory, ItemRarity, PlayerClass, World } from "../../packages/src/index.js";
+import { ItemCategory, ItemRarity, PlayerClass, World } from "dragons-of-legends.js";
 import { renderHomePage } from "./pages/home.js";
 import { renderLoginPage } from "./pages/login.js";
 import { renderInventoryPage } from "./pages/inventory.js";
