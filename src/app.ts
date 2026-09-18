@@ -14,7 +14,7 @@ import rateLimit from "express-rate-limit";
 import { MongoClient } from "mongodb";
 
 dotenv.config();
-
+consola.info("MongoDB URI status:", process.env.MONGODB_URI ? "Loaded (Length: " + process.env.MONGODB_URI.length + ")" : "MISSING!");
 declare module "express-session" {
   interface SessionData {
     user?: { id: string; username: string };
@@ -34,7 +34,7 @@ async function connectAccountsDB() {
   try {
     await mongoClient.connect();
     const db = mongoClient.db(); 
-    accountsCollection = db.collection("accounts");
+    accountsCollection = db.collection("dragons-of-legends");
     consola.success("Connected to MongoDB Accounts collection successfully.");
   } catch (error) {
     consola.error("Failed to connect to Accounts MongoDB:", error);
@@ -45,7 +45,12 @@ connectAccountsDB();
 const rpg = new World({ 
   premadeMap: true, 
   deathMode: "hardcore", 
-  database: { adapter: "mongodb", uri: mongoUri } as any
+  database: { 
+    adapter: "mongodb", 
+    uri: process.env.MONGODB_URI,
+    initializationOptions: {},
+    options: {}
+  } as any
 });
 
 // --- MIDDLEWARES GLOBAUX (DOIVENT ÊTRE AVANT LES ROUTES) ---
