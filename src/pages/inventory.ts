@@ -1,8 +1,7 @@
-import { Item, InventoryItemRecord } from "dragons-of-legends.js/dist/inventory/inventory.interface";
 
-export function renderInventoryPage(version: string, player: any, items: InventoryItemRecord[] = []): string {
+export function renderInventoryPage(version: string, player: any, items: any[] = []): string {
   
-  function getItemIcon(item: Item): string {
+  function getItemIcon(item: any): string {
     const category = (item.category || "").toLowerCase();
     const id = (item.itemId || item.name || "").toLowerCase();
 
@@ -28,7 +27,7 @@ export function renderInventoryPage(version: string, player: any, items: Invento
     sword: null, shield: null, amulet1: null, amulet2: null, amulet3: null
   };
 
-  const inventoryItems: InventoryItemRecord[] = [];
+  const inventoryItems: any[] = [];
   const equippedItemsMap: { [key: string]: any } = {};
 
   for (const item of items) {
