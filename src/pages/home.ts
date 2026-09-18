@@ -307,7 +307,7 @@ export function renderHomePage(version: string, player: any): string {
                 </div>
                 
                 <div class="user-info">
-                    <span><strong>${player.name}</strong> <span style="font-size: 11px; color: var(--text-muted);">(${player.classId})</span></span>
+                    <span><strong>${player.name}</strong> <span style="font-size: 11px; color: var(--text-muted);"> (${player.classId})</span></span>
                     <a href="/logout" class="logout-btn">Logout</a>
                 </div>
 

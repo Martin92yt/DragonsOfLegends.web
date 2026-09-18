@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import { consola } from "consola";
-import { ItemCategory, ItemRarity, PlayerClass, World } from "../../packages/src/index.js";
+import { ItemCategory, ItemRarity, PlayerClass, World } from "dragons-of-legends.js";
 import { renderHomePage } from "./pages/home.js";
 import { renderLoginPage } from "./pages/login.js";
 import { renderInventoryPage } from "./pages/inventory.js";
@@ -17,8 +17,8 @@ declare module "express-session" {
 }
 const app = express();
 const PORT = process.env.PORT || 3000;
-const VERSION = "0.1.0";
-const rpg = new World({ premadeMap: true });
+const VERSION = "0.1.2-b";
+const rpg = new World({ premadeMap: true, deathMode: "hardcore" });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
