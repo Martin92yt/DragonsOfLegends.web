@@ -1,8 +1,13 @@
-export function renderLoginPage(version: string, error: string | null = null): string {
+export function renderRegisterPage(version: string, error: string | null = null): string {
     let errorMessage = "";
     if (error) {
-        let text = "Please fill in all required fields.";
-        if (error === "invalid_credentials") text = "Invalid username or password.";
+        let text = "An error occurred.";
+        if (error === "missing_fields") text = "Please fill in all required fields.";
+        else if (error === "username_taken") text = "This adventurer name is already taken.";
+        else if (error === "password_too_short") text = "Password must be at least 6 characters long.";
+        else if (error === "terms_not_accepted") text = "You must accept the terms regarding data wipes.";
+        else if (error === "server_error") text = "Internal server error. Please try again.";
+
         errorMessage = `<div class="error-box">${text}</div>`;
     }
 
@@ -11,7 +16,7 @@ export function renderLoginPage(version: string, error: string | null = null): s
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Dragons of Legends — Login</title>
+            <title>Dragons of Legends — Register</title>
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -57,7 +62,7 @@ export function renderLoginPage(version: string, error: string | null = null): s
                     border: 1px solid var(--card-border);
                     border-radius: 16px;
                     padding: 32px;
-                    width: 360px;
+                    width: 380px;
                     box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
                     backdrop-filter: blur(12px);
                     transition: border-color 0.3s ease;
@@ -136,7 +141,7 @@ export function renderLoginPage(version: string, error: string | null = null): s
                     text-transform: uppercase;
                 }
 
-                input {
+                input[type="text"], input[type="password"] {
                     width: 100%;
                     padding: 10px 12px;
                     background: rgba(255, 255, 255, 0.02);
@@ -149,11 +154,37 @@ export function renderLoginPage(version: string, error: string | null = null): s
                     transition: all 0.2s ease;
                 }
 
-                input:focus {
+                input[type="text"]:focus, input[type="password"]:focus {
                     outline: none;
                     border-color: var(--primary);
                     background: rgba(56, 189, 248, 0.03);
                     box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+                }
+
+                .checkbox-group {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 8px;
+                    margin-top: 16px;
+                    margin-bottom: 16px;
+                }
+
+                .checkbox-group input[type="checkbox"] {
+                    accent-color: var(--primary);
+                    margin-top: 1px;
+                    cursor: pointer;
+                    width: 14px;
+                    height: 14px;
+                }
+
+                .checkbox-group label {
+                    font-size: 10px;
+                    color: var(--text-muted);
+                    text-transform: none;
+                    font-weight: 500;
+                    line-height: 1.4;
+                    cursor: pointer;
+                    letter-spacing: normal;
                 }
 
                 button {
@@ -185,6 +216,12 @@ export function renderLoginPage(version: string, error: string | null = null): s
                     transform: translateY(0);
                 }
 
+                .hint {
+                    font-size: 10px;
+                    color: var(--text-muted);
+                    margin-top: 4px;
+                }
+
                 .footer-link {
                     text-align: center;
                     margin-top: 16px;
@@ -209,26 +246,32 @@ export function renderLoginPage(version: string, error: string | null = null): s
                     <h1>Dragons of Legends</h1>
                     <span class="badge">v${version}</span>
                 </div>
-                <div class="subtitle">Enter the realm</div>
+                <div class="subtitle">Create your account</div>
                 
                 ${errorMessage}
                 
-                <form action="/login" method="POST">
+                <form action="/register" method="POST">
                     <div class="form-group">
-                        <label for="username">Adventurer Name</label>
-                        <input type="text" id="username" name="username" placeholder="e.g., Arthur" required autocomplete="off">
+                        <label for="username">Choose Adventurer Name</label>
+                        <input type="text" id="username" name="username" placeholder="e.g., Lancelot" required autocomplete="off">
                     </div>
                     
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        <div class="hint">Minimum 6 characters</div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">J'accepte la possibilité que mes données soient effacées lors de mises à jour.</label>
                     </div>
                     
-                    <button type="submit">Start Journey</button>
+                    <button type="submit">Create Account</button>
                 </form>
 
                 <div class="footer-link">
-                    Don't have an account? <a href="/register">Register</a>
+                    Already have an account? <a href="/login">Log in</a>
                 </div>
             </div>
         </body>
