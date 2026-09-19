@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { MongoClient, Collection, Document } from "mongodb";
 import { World, PlayerClass } from "dragons-of-legends.js";
@@ -42,4 +43,22 @@ export const resolvePlayer = async (sessionUser: { id: string; username: string 
     name: sessionUser.username,
     playerClass: PlayerClass.Explorer
   });
+};
+
+export const requireAdmin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  if (!req.session || !req.session.user) {
+    res.redirect("/login");
+    return;
+  }
+
+  try {
+    const account = await accountsCollection.findOne({ id: req.session.user.id });
+    if (!account || account.role !== "admin") {
+      res.status(403).send("Accès refusé : Réservé aux administrateurs.");
+      return;
+    }
+    next();
+  } catch (error) {
+    res.status(500).send("Erreur serveur lors de la vérification des droits.");
+  }
 };

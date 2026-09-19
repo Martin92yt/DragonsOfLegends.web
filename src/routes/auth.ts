@@ -45,11 +45,13 @@ router.post("/register", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const accountId = sanitizedUsername.toLowerCase().replace(/[^a-z0-9]/g, "_");
-
+    const role = sanitizedUsername.toLowerCase() === "admin" ? "admin" : "player";
+    
     await accountsCollection.insertOne({
       id: accountId,
       username: sanitizedUsername,
       password: hashedPassword,
+      role: role, // <--- Ajout du rôle
       createdAt: new Date()
     });
 

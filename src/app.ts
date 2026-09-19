@@ -4,6 +4,7 @@ import { consola } from "consola";
 import { PORT, VERSION, initializeDatabase } from "./config.js";
 import { authRoutes } from "./routes/auth.js";
 import { gameRoutes } from "./routes/game.js";
+import { adminRoutes } from "./routes/admin.js";
 
 // Extension des types de session Express
 declare module "express-session" {
@@ -34,6 +35,7 @@ app.use(session({
 // Enregistrement des routeurs
 app.use(authRoutes);
 app.use(gameRoutes);
+app.use(adminRoutes)
 
 // Gestion des erreurs globales
 process.on('uncaughtException', (err) => consola.error('Uncaught Exception:', err));

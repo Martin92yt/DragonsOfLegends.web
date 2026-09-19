@@ -64,7 +64,7 @@ router.post("/action/inventory/unequip", async (req, res) => {
   }
 });
 
-router.post("/action/combat", async (req, res) => {
+router.post("/action/combat", requireAuthentication, async (req, res) => {
   try {
     const activePlayer = await resolvePlayer(req.session.user!);
     if (!activePlayer) return res.redirect("/login");
@@ -73,6 +73,7 @@ router.post("/action/combat", async (req, res) => {
       ? await rpg.combat.get(activePlayer.id) 
       : await rpg.combat.start(activePlayer);
 
+    consola.success(`Combat session initialized for player ${activePlayer.name}.`);
     res.send(renderCombatPage(VERSION, activePlayer, combatResult));
   } catch (error) {
     consola.error("Failed to initialize combat:", error);
@@ -129,7 +130,52 @@ router.post("/action/bank/withdraw", async (req, res) => {
     res.redirect("/action/bank");
   }
 });
+// Gérer l'action d'attaquer pendant un combat
+router.post("/action/combat/attack", requireAuthentication, async (req, res) => {
+  try {
+    const activePlayer = await resolvePlayer(req.session.user!);
+    if (!activePlayer) return res.redirect("/login");
 
+    const combatResult = rpg.combat.attack 
+      ? await rpg.combat.attack(activePlayer.id) 
+      : await (await rpg.combat.start(activePlayer)).attack();
+
+    if (combatResult?.victory || !activePlayer.inCombat) {
+      const enemyDrops = combatResult?.enemy?.droppedLootList;
+      if (enemyDrops && Array.isArray(enemyDrops)) {
+        for (const drop of enemyDrops) {
+          await activePlayer.inventory.add(drop.loot, drop.quantity);
+        }
+      }
+      consola.success(`Combat concluded successfully for player ${activePlayer.name}.`);
+      return res.redirect("/");
+    } 
+    
+    if (combatResult?.defeat) {
+      consola.warn(`Player ${activePlayer.name} was defeated in combat.`);
+      return res.redirect("/");
+    }
+
+    res.send(renderCombatPage(VERSION, activePlayer, combatResult));
+  } catch (error) {
+    consola.error("Combat action failed:", error);
+    res.redirect("/");
+  }
+});
+
+// Optionnel : si tu as aussi une action pour fuir le combat
+router.post("/action/combat/flee", async (req, res) => {
+  try {
+    const activePlayer = await resolvePlayer(req.session.user!);
+    if (!activePlayer) return res.redirect("/login");
+
+    await rpg.combat.attack(activePlayer.id);
+    res.redirect("/");
+  } catch (error) {
+    consola.error("Failed to flee combat:", error);
+    res.redirect("/");
+  }
+});
 // Voyage
 router.post("/action/travel", async (req, res) => {
   try {
