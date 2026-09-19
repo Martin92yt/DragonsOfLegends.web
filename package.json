@@ -7,10 +7,14 @@
   "type": "module",
   "main": "src/app.ts",
   "scripts": {
-    "start": "cls && echo. && tsx src/app.ts",
+    "start": "tsx src/app.ts",
     "dev": "npx nodemon --watch src --ext ts,json --exec tsx src/app.ts"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
+    "@types/node": "^26.6.2",
     "bcrypt": "^6.0.0",
     "consola": "^3.4.2",
     "dotenv": "^17.4.2",
@@ -18,13 +22,7 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "express-session": "^1.19.0",
-    "mongodb": "^7.6.0"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/express": "^5.0.6",
-    "@types/express-session": "^1.19.0",
-    "@types/node": "^26.6.2",
+    "mongodb": "^7.6.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }
