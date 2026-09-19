@@ -14,7 +14,7 @@ import rateLimit from "express-rate-limit";
 import { MongoClient } from "mongodb";
 
 dotenv.config();
-consola.info("MongoDB URI status:", process.env.MONGODB_URI ? "Loaded (Length: " + process.env.MONGODB_URI.length + ")" : "MISSING!");
+
 declare module "express-session" {
   interface SessionData {
     user?: { id: string; username: string };
@@ -44,14 +44,14 @@ connectAccountsDB();
 
 const rpg = new World({ 
   premadeMap: true, 
+  checkUpdates: true,
   deathMode: "hardcore", 
   database: { 
     adapter: "mongodb", 
-    uri: process.env.MONGODB_URI,
-    initializationOptions: {},
-    options: {}
-  } as any
-});
+    path: "./data.db", // Requis par le typage de l'interface même si tu utilises mongodb
+    uri: mongoUri 
+  }
+} as any);
 
 // --- MIDDLEWARES GLOBAUX (DOIVENT ÊTRE AVANT LES ROUTES) ---
 app.use(express.json());
