@@ -23,7 +23,7 @@ declare module "express-session" {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const VERSION = "0.1.3-alpha.4";
+const VERSION = "0.1.3-alpha.6";
 
 const mongoUri = process.env.MONGODB_URI || "";
 const mongoClient = new MongoClient(mongoUri);
