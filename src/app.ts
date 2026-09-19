@@ -434,7 +434,13 @@ process.on('unhandledRejection', (reason, promise) => {
   consola.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-app.listen(Number(PORT), () => {
-  consola.start(`Starting project with version ${VERSION}...`);
-  consola.success(`Server listening on http://localhost:${PORT}`);
-});
+async function startServer() {
+  await initializeDatabase(); // On attend que MongoDB soit connecté
+
+  app.listen(Number(PORT), () => {
+    consola.start(`Starting project with version ${VERSION}...`);
+    consola.success(`Server listening on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
