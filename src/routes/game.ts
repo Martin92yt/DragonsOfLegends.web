@@ -1,11 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { consola } from "consola";
-import { rpg, resolvePlayer, VERSION } from "../config.js";
+import { rpg, resolvePlayer, VERSION, accountsCollection } from "../config.js";
 import { renderHomePage } from "../pages/home.js";
 import { renderInventoryPage } from "../pages/inventory.js";
 import { renderCombatPage } from "../pages/combat.js";
 import { renderTravelPage } from "../pages/travel.js";
 import { renderBankPage } from "../pages/bank.js";
+import { renderProfilePage } from "../pages/profil.js";
 
 const router = Router();
 

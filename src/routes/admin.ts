@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { accountsCollection, rpg } from "../config.js";
+import { accountsCollection, rpg, VERSION } from "../config.js";
 import { requireAdmin } from "../config.js";
 import { renderAdminPage } from "../pages/admin.js";
 import { renderPlayerDetailPage } from "../pages/admin.details.js";
@@ -64,7 +64,7 @@ router.get("/admin", async (req, res) => {
       };
 
     const html = renderAdminPage(
-      "0.1.0",
+      VERSION,
       currentAdminUser,
       playersWithData,
       stats,
@@ -138,7 +138,7 @@ router.get("/admin/player/:id", async (req, res) => {
       };
 
     const html = renderPlayerDetailPage(
-      "0.1.0",
+      VERSION,
       currentAdminUser,
       playerWithData
     );

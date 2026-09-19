@@ -2,10 +2,11 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import rateLimit from "express-rate-limit";
 import { consola } from "consola";
-import { accountsCollection } from "../config.js";
+import { accountsCollection, resolvePlayer } from "../config.js";
 import { renderLoginPage } from "../pages/login.js";
 import { renderRegisterPage } from "../pages/register.js";
 import { VERSION } from "../config.js";
+import { renderProfilePage } from "../pages/profil.js";
 
 const router = Router();
 
@@ -118,6 +119,46 @@ router.post("/account/change-password", async (req, res) => {
     consola.error("Error changing password:", error);
     res.status(500).send("Internal server error");
   }
+});
+
+router.get('/profil', async (req, res) => {
+    try {
+        const username = req.query.user as string;
+        if (!username) {
+            return res.status(400).send("Nom d'aventurier manquant.");
+        }
+
+        const targetAccount = await accountsCollection.findOne({ username });
+        if (!targetAccount) {
+            return res.status(404).send("Aventurier introuvable.");
+        }
+
+        // Résolution de l'objet joueur complet du RPG
+        const targetPlayer = await resolvePlayer({
+            id: targetAccount.id,
+            username: targetAccount.username
+        });
+
+        let partnerAccount = null;
+        
+        // Utilisation sécurisée de la méthode publique getPartnerId()
+        const partnerId = typeof targetPlayer?.marriage?.getPartnerId === 'function' 
+            ? targetPlayer.marriage.getPartnerId() 
+            : null;
+
+        if (partnerId) {
+            const pAcc = await accountsCollection.findOne({ id: partnerId });
+            if (pAcc) {
+                partnerAccount = await resolvePlayer({ id: pAcc.id, username: pAcc.username });
+            }
+        }
+
+        const html = renderProfilePage(VERSION, targetPlayer, partnerAccount);
+        res.send(html);
+    } catch (error) {
+        consola.error("Failed to load profile page:", error);
+        res.status(500).send("Erreur lors du chargement du profil.");
+    }
 });
 
 router.all("/logout", (req, res) => {

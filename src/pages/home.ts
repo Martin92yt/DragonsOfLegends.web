@@ -25,6 +25,8 @@ export function renderHomePage(version: string, player: any): string {
                     --danger: #f87171;
                     --danger-glow: rgba(248, 113, 113, 0.12);
                     --success: #34d399;
+                    --marriage: #ec4899;
+                    --marriage-glow: rgba(236, 72, 153, 0.12);
                 }
 
                 * {
@@ -294,6 +296,13 @@ export function renderHomePage(version: string, player: any): string {
                     color: var(--danger);
                     box-shadow: 0 4px 12px rgba(248, 113, 113, 0.1);
                 }
+
+                .btn-action.marriage:hover {
+                    background: var(--marriage-glow);
+                    border-color: var(--marriage);
+                    color: var(--marriage);
+                    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.1);
+                }
             </style>
         </head>
         <body>
@@ -378,9 +387,13 @@ export function renderHomePage(version: string, player: any): string {
                         Inventory <span class="icon">🎒</span>
                     </a>
 
-                    <!-- Bouton Bank ajouté ici -->
                     <a href="/action/bank" class="btn-action">
                         Bank <span class="icon">🏦</span>
+                    </a>
+
+                    <!-- Bouton Marriage ajouté ici -->
+                    <a href="/marriage" class="btn-action marriage">
+                        Marriage <span class="icon">❤️</span>
                     </a>
                     
                     <form action="/action/combat" method="POST" style="margin: 0;">
